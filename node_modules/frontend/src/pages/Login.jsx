@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Globe, Phone, Mail, User, ArrowRight, Loader2 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
+import { getRedirectResult } from 'firebase/auth';
+import { auth } from '../config/firebase';
 
 const Login = () => {
   const [authMode, setAuthMode] = useState('login'); // login, signup, phone
@@ -18,6 +20,23 @@ const Login = () => {
   const { isAuthenticated, dbUser, signInWithGoogle, signUpWithEmailPassword, loginWithEmailPassword, sendPhoneOTP, verifyPhoneOTP } = useAuth();
   const { darkMode } = useTheme();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check for redirect result (mobile Google sign-in)
+    const checkRedirectResult = async () => {
+      try {
+        const result = await getRedirectResult(auth);
+        if (result) {
+          console.log('Google sign-in successful via redirect');
+        }
+      } catch (error) {
+        console.error('Google redirect sign-in error:', error);
+        setError('Failed to sign in with Google. Please try again.');
+      }
+    };
+    
+    checkRedirectResult();
+  }, []);
 
   useEffect(() => {
     if (isAuthenticated && dbUser) {
