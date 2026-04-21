@@ -3,12 +3,15 @@ const admin = require('firebase-admin');
 let firebaseAdmin;
 
 try {
-  if (process.env.FIREBASE_PRIVATE_KEY && process.env.FIREBASE_CLIENT_EMAIL) {
+  const privateKey = process.env.FIREBASE_PRIVATE_KEY || process.env.PRIVATE_KEY;
+  const clientEmail = process.env.FIREBASE_CLIENT_EMAIL || process.env.CLIENT_EMAIL;
+
+  if (privateKey && clientEmail) {
     const serviceAccount = {
       type: "service_account",
-      project_id: process.env.FIREBASE_PROJECT_ID || "mock-test81",
-      private_key: (process.env.FIREBASE_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
-      client_email: process.env.FIREBASE_CLIENT_EMAIL,
+      project_id: process.env.FIREBASE_PROJECT_ID || process.env.PROJECT_ID || "mock-test81",
+      private_key: privateKey.replace(/\\n/g, '\n'),
+      client_email: clientEmail,
     };
 
     if (!admin.apps.length) {
