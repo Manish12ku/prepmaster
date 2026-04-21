@@ -10,11 +10,15 @@ const connectDB = async () => {
       return;
     }
     
-    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/prepmaster');
+    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/prepmaster');
     console.log(`MongoDB Connected: ${conn.connection.host}`);
     isConnected = true;
   } catch (error) {
-    console.error(`MongoDB Connection Error: ${error.message}`);
+    const uri = process.env.MONGODB_URI ? 'environment variable' : 'default local';
+    console.error(`MongoDB Connection Error (using ${uri}): ${error.message}`);
+    if (process.env.NODE_ENV === 'production') {
+      console.error('CRITICAL: MongoDB is not connected in production. Ensure MONGODB_URI is set to a valid cloud database.');
+    }
     console.log('Running in limited mode without database. Set SKIP_MONGODB=true to suppress this warning.');
     isConnected = false;
     // Don't exit process - allow server to run without DB for frontend testing

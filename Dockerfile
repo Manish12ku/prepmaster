@@ -2,15 +2,19 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy backend package.json and install dependencies
-COPY backend/package.json ./
-RUN npm install
+# Copy the full app so we can build the frontend and serve it from Express
+COPY package*.json ./
+COPY frontend/package*.json ./frontend/
+COPY backend/package*.json ./backend/
 
-# Copy backend source code
-COPY backend/ ./
+RUN cd frontend && npm install
+RUN cd backend && npm install
 
-# Expose port
+COPY . .
+RUN cd frontend && npm run build
+
+# Expose app port
 EXPOSE 5000
 
-# Start the server
+# Start the backend, which also serves the built frontend
 CMD ["npm", "start"]

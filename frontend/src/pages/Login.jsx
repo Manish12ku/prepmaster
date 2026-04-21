@@ -20,6 +20,7 @@ const Login = () => {
   const { isAuthenticated, dbUser, signInWithGoogle, signUpWithEmailPassword, loginWithEmailPassword, sendPhoneOTP, verifyPhoneOTP } = useAuth();
   const { darkMode } = useTheme();
   const navigate = useNavigate();
+  const showDevOtpHelp = import.meta.env.DEV;
 
   useEffect(() => {
     // Check for redirect result (mobile Google sign-in)
@@ -315,7 +316,7 @@ const Login = () => {
                 
                 <div id="recaptcha-container" className="flex justify-center"></div>
                 
-                {process.env.NODE_ENV === 'development' && (
+                {showDevOtpHelp && (
                   <p className="text-xs text-amber-600 dark:text-amber-400 text-center bg-amber-50 dark:bg-amber-900/30 p-2 rounded">
                     Development Mode: Use OTP <strong>123456</strong> to login
                   </p>

@@ -11,7 +11,7 @@ export const getUserProfile = async () => {
 };
 
 export const updateUserProfile = async (profileData) => {
-  const response = await api.patch('/users/profile', profileData);
+  const response = await api.put('/users/profile', profileData);
   return response.data;
 };
 

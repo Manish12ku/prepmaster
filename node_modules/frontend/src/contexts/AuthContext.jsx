@@ -19,6 +19,10 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [confirmationResult, setConfirmationResult] = useState(null);
+  const isDevelopmentMode =
+    import.meta.env.DEV ||
+    (typeof window !== 'undefined' &&
+      ['localhost', '127.0.0.1'].includes(window.location.hostname));
 
   const loadUserFromBackend = async () => {
     const response = await getUserProfile();
@@ -83,7 +87,7 @@ export const AuthProvider = ({ children }) => {
 
   const sendPhoneOTP = async (phoneNumber) => {
     // Check if running in development/demo mode
-    if (process.env.NODE_ENV === 'development' || window.location.hostname === 'localhost') {
+    if (isDevelopmentMode) {
       // Mock OTP for development - any 6-digit code works
       console.log('Development mode: Mock OTP sent to', phoneNumber);
       console.log('Use OTP: 123456 to login');

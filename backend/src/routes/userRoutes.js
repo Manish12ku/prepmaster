@@ -13,7 +13,7 @@ const {
 
 router.post('/sync', verifyToken, syncUser);
 router.get('/profile', verifyToken, getUserProfile);
-router.patch('/profile', verifyToken, updateUserProfile);
+router.put('/profile', verifyToken, updateUserProfile);
 router.get('/', verifyToken, requireRole(['super_admin']), getAllUsers);
 router.get('/:id', verifyToken, requireRole(['admin', 'super_admin']), getUserById);
 router.patch('/:id/role', verifyToken, requireRole(['super_admin']), updateUserRole);
