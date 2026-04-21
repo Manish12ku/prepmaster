@@ -10,18 +10,31 @@ const connectDB = async () => {
       return;
     }
     
-    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/prepmaster');
+    const mongodbUri = process.env.MONGODB_URI;
+    
+    if (!mongodbUri) {
+      if (process.env.NODE_ENV === 'production') {
+        throw new Error('MONGODB_URI environment variable is missing in production. Please set it in your hosting platform dashboard.');
+      }
+      console.warn('MONGODB_URI is not defined. Falling back to local MongoDB.');
+    }
+    
+    const conn = await mongoose.connect(mongodbUri || 'mongodb://127.0.0.1:27017/prepmaster');
     console.log(`MongoDB Connected: ${conn.connection.host}`);
     isConnected = true;
   } catch (error) {
-    const uri = process.env.MONGODB_URI ? 'environment variable' : 'default local';
-    console.error(`MongoDB Connection Error (using ${uri}): ${error.message}`);
+    console.error(`MongoDB Connection Error: ${error.message}`);
+    
     if (process.env.NODE_ENV === 'production') {
-      console.error('CRITICAL: MongoDB is not connected in production. Ensure MONGODB_URI is set to a valid cloud database.');
+      console.error('CRITICAL: Your database is not connected! Make sure your MONGODB_URI is valid and your database is online.');
     }
-    console.log('Running in limited mode without database. Set SKIP_MONGODB=true to suppress this warning.');
+    
     isConnected = false;
-    // Don't exit process - allow server to run without DB for frontend testing
+    // Don't exit process in development to allow server to run without DB for testing
+    if (process.env.NODE_ENV === 'production') {
+      // On Railway, you might want to exit to signal a failed startup
+      // process.exit(1); 
+    }
   }
 };
 
