@@ -12,6 +12,9 @@ const connectDB = async () => {
     
     const mongodbUri = process.env.MONGODB_URI || process.env.MONGO_URI || process.env.DATABASE_URL;
     
+    // Debug log to see available variables (without sensitive values)
+    console.log('Available environment variables:', Object.keys(process.env).filter(key => !key.includes('KEY') && !key.includes('SECRET')).join(', '));
+    
     if (!mongodbUri) {
       console.warn('--- DATABASE CONFIGURATION WARNING ---');
       console.warn('No MONGODB_URI found in environment variables.');
