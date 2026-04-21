@@ -8,6 +8,7 @@ const connectDB = require('./config/database');
 dotenv.config();
 
 const app = express();
+
 const frontendDistPath = path.resolve(__dirname, '../../frontend/dist');
 const frontendIndexPath = path.join(frontendDistPath, 'index.html');
 const hasFrontendBuild = fs.existsSync(frontendIndexPath);
@@ -16,6 +17,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Connect to Database
 connectDB();
 
 app.use('/api/users', require('./routes/userRoutes'));
