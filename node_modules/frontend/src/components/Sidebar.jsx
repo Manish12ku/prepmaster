@@ -2,8 +2,9 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { getNavItems } from '../utils/navigation';
+import { X } from 'lucide-react';
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, closeSidebar }) => {
   const { dbUser, isSuperAdmin, isAdmin } = useAuth();
   const navItems = getNavItems(dbUser?.role);
 
@@ -20,8 +21,14 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="w-64 bg-white dark:bg-gray-800 shadow-md min-h-screen">
-      <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+    <aside 
+      className={`
+        fixed inset-y-0 left-0 z-30 w-64 bg-white dark:bg-gray-800 shadow-xl transition-transform duration-300 ease-in-out transform
+        md:relative md:translate-x-0 md:shadow-md min-h-screen
+        ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+      `}
+    >
+      <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center space-x-3">
           <div className="flex-1">
             <p className="text-sm text-gray-500 dark:text-gray-400">Role</p>
@@ -30,15 +37,24 @@ const Sidebar = () => {
             </span>
           </div>
         </div>
+        <button 
+          onClick={closeSidebar}
+          className="p-2 rounded-lg md:hidden hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500"
+        >
+          <X size={20} />
+        </button>
       </div>
 
-      <nav className="p-4 space-y-1">
+      <nav className="p-4 space-y-1 overflow-y-auto max-h-[calc(100vh-80px)]">
         {navItems.map((item) => {
           const Icon = item.icon;
           return (
             <NavLink
               key={item.path}
               to={item.path}
+              onClick={() => {
+                if (window.innerWidth < 768) closeSidebar();
+              }}
               className={({ isActive }) =>
                 `flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
                   isActive

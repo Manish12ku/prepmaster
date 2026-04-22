@@ -114,178 +114,174 @@ const Profile = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">My Profile</h1>
-        <div className="flex gap-2">
-          <button
-            onClick={() => setShowPasswordModal(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-          >
-            <Key size={18} />
-            Change Password
-          </button>
+    <div className="max-w-4xl mx-auto space-y-6 px-1 sm:px-0 pb-10">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+          My Profile
+        </h1>
+        <div className="flex items-center gap-2">
           {!isEditing ? (
             <button
               onClick={() => setIsEditing(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors"
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2.5 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 rounded-xl font-bold hover:bg-gray-50 dark:hover:bg-gray-700 transition-all shadow-sm active:scale-[0.98]"
             >
               <Edit2 size={18} />
               Edit Profile
             </button>
           ) : (
-            <button
-              onClick={() => setIsEditing(false)}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-            >
-              <X size={18} />
-              Cancel
-            </button>
-          )}
-        </div>
-      </div>
-
-      {error && (
-        <div className="p-4 bg-red-100 text-red-700 rounded-lg flex items-center gap-2">
-          <Shield size={18} />
-          {error}
-        </div>
-      )}
-
-      {success && (
-        <div className="p-4 bg-green-100 text-green-700 rounded-lg flex items-center gap-2">
-          <Shield size={18} />
-          Profile updated successfully!
-        </div>
-      )}
-
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-        <div className="bg-gradient-to-r from-primary-600 to-primary-700 px-6 py-8">
-          <div className="flex items-center space-x-6">
-            <div className="bg-white dark:bg-gray-800 p-2 rounded-full">
-              {dbUser?.photoURL ? (
-                <img src={dbUser.photoURL} alt={dbUser.name} className="h-24 w-24 rounded-full object-cover" />
-              ) : (
-                <div className="h-24 w-24 rounded-full bg-primary-100 flex items-center justify-center">
-                  <User size={48} className="text-primary-600" />
-                </div>
-              )}
-            </div>
-            <div className="text-white">
-              <h2 className="text-3xl font-bold">{dbUser?.name || 'User'}</h2>
-              <p className="text-primary-100 mt-1">{dbUser?.email || 'No email'}</p>
-            </div>
-          </div>
-        </div>
-
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-500 dark:text-gray-400 flex items-center gap-2">
-                <User size={16} />
-                Full Name
-              </label>
-              {isEditing ? (
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="w-full p-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none transition-all dark:text-white"
-                  placeholder="Enter your name"
-                  required
-                />
-              ) : (
-                <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <p className="text-lg font-semibold text-gray-900 dark:text-white">
-                    {dbUser?.name || 'Not set'}
-                  </p>
-                </div>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-500 dark:text-gray-400 flex items-center gap-2">
-                <Mail size={16} />
-                Email Address
-              </label>
-              <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg opacity-75">
-                <p className="text-lg font-semibold text-gray-900 dark:text-white">
-                  {dbUser?.email || 'Not set'}
-                </p>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-500 dark:text-gray-400 flex items-center gap-2">
-                <Phone size={16} />
-                Phone Number
-              </label>
-              {isEditing ? (
-                <input
-                  type="text"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="w-full p-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none transition-all dark:text-white"
-                  placeholder="Enter phone number"
-                />
-              ) : (
-                <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <p className="text-lg font-semibold text-gray-900 dark:text-white">
-                    {dbUser?.phone || user?.phoneNumber || 'Not set'}
-                  </p>
-                </div>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-500 dark:text-gray-400 flex items-center gap-2">
-                <Shield size={16} />
-                Role
-              </label>
-              <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg opacity-75">
-                <span className={`inline-block px-4 py-2 rounded-full text-sm font-semibold ${getRoleBadgeColor()}`}>
-                  {getRoleLabel()}
-                </span>
-              </div>
-            </div>
-
-            {isEditing && (
-              <div className="space-y-2 md:col-span-2">
-                <label className="text-sm font-medium text-gray-500 dark:text-gray-400 flex items-center gap-2">
-                  <User size={16} />
-                  Profile Photo URL
-                </label>
-                <input
-                  type="text"
-                  name="photoURL"
-                  value={formData.photoURL}
-                  onChange={handleChange}
-                  className="w-full p-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none transition-all dark:text-white"
-                  placeholder="Enter image URL"
-                />
-              </div>
-            )}
-          </div>
-
-          {isEditing && (
-            <div className="flex justify-end pt-4">
+            <div className="flex items-center gap-2 w-full sm:w-auto">
               <button
-                type="submit"
-                disabled={loading}
-                className="flex items-center gap-2 px-8 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-primary-500/30"
+                onClick={() => setIsEditing(false)}
+                className="flex-1 sm:flex-none px-6 py-2.5 text-gray-600 dark:text-gray-400 font-bold hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-all"
               >
-                {loading ? (
-                  <Loader2 className="animate-spin" size={20} />
-                ) : (
-                  <Save size={20} />
-                )}
+                Cancel
+              </button>
+              <button
+                onClick={handleSubmit}
+                disabled={loading}
+                className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-primary-500/25 disabled:opacity-50 active:scale-[0.98]"
+              >
+                {loading ? <Loader2 className="animate-spin" size={18} /> : <Save size={18} />}
                 Save Changes
               </button>
             </div>
           )}
-        </form>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Left Column: Avatar & Basic Info */}
+        <div className="md:col-span-1 space-y-6">
+          <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 text-center relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-2 bg-primary-500" />
+            <div className="relative inline-block mb-6">
+              <div className="w-32 h-32 rounded-3xl bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center text-primary-600 dark:text-primary-400 border-4 border-white dark:border-gray-800 shadow-xl mx-auto overflow-hidden">
+                {formData.photoURL ? (
+                  <img src={formData.photoURL} alt={formData.name} className="w-full h-full object-cover" />
+                ) : (
+                  <User size={64} />
+                )}
+              </div>
+              {isEditing && (
+                <div className="absolute -bottom-2 -right-2 p-2 bg-primary-600 text-white rounded-xl shadow-lg border-2 border-white dark:border-gray-800">
+                  <Edit2 size={16} />
+                </div>
+              )}
+            </div>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white truncate px-2">
+              {dbUser?.name}
+            </h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 uppercase tracking-wider font-bold">
+              {dbUser?.role}
+            </p>
+          </div>
+
+          <button
+            onClick={() => setShowPasswordModal(true)}
+            className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 rounded-2xl font-bold hover:bg-gray-50 dark:hover:bg-gray-700 transition-all shadow-sm active:scale-[0.98]"
+          >
+            <Key size={18} />
+            Change Password
+          </button>
+        </div>
+
+        {/* Right Column: Details Form */}
+        <div className="md:col-span-2">
+          <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 sm:p-8">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+              <User size={20} className="text-primary-500" />
+              Personal Information
+            </h3>
+
+            {success && (
+              <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 rounded-2xl border border-green-100 dark:border-green-800 flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-green-500" />
+                Profile updated successfully!
+              </div>
+            )}
+
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-2xl border border-red-100 dark:border-red-800 flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-red-500" />
+                {error}
+              </div>
+            )}
+
+            <form className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">
+                    Full Name
+                  </label>
+                  <div className="relative group">
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary-500 transition-colors" size={20} />
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      disabled={!isEditing}
+                      className="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-gray-700/50 border-2 border-gray-100 dark:border-gray-600 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 outline-none transition-all dark:text-white disabled:opacity-60"
+                      placeholder="Your Name"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">
+                    Phone Number
+                  </label>
+                  <div className="relative group">
+                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary-500 transition-colors" size={20} />
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      disabled={!isEditing}
+                      className="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-gray-700/50 border-2 border-gray-100 dark:border-gray-600 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 outline-none transition-all dark:text-white disabled:opacity-60"
+                      placeholder="+91 98765 43210"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">
+                  Email Address
+                </label>
+                <div className="relative group">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary-500 transition-colors" size={20} />
+                  <input
+                    type="email"
+                    value={dbUser?.email || ''}
+                    disabled
+                    className="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-gray-700/50 border-2 border-gray-100 dark:border-gray-600 rounded-2xl outline-none transition-all dark:text-white opacity-60 cursor-not-allowed"
+                  />
+                </div>
+                <p className="text-xs text-gray-500 ml-1">Email cannot be changed.</p>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">
+                  Profile Photo URL
+                </label>
+                <div className="relative group">
+                  <Edit2 className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary-500 transition-colors" size={20} />
+                  <input
+                    type="text"
+                    name="photoURL"
+                    value={formData.photoURL}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                    className="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-gray-700/50 border-2 border-gray-100 dark:border-gray-600 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 outline-none transition-all dark:text-white disabled:opacity-60"
+                    placeholder="https://example.com/photo.jpg"
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
 
       {showPasswordModal && (

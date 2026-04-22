@@ -109,15 +109,27 @@ const TestInterface = () => {
     } catch (error) {
       console.error('Error fetching test:', error);
       setLoading(false);
-      
+
       if (error.response?.status === 403) {
         setSecretCodeError('Invalid secret code. Please try again.');
         setShowSecretCodePrompt(true);
         setSecretCode('');
         return;
       }
-      
-      setSecretCodeError('Error loading test. Please try again.');
+
+      if (error.response?.status === 404) {
+        setSecretCodeError('Test not found. It may have been deleted.');
+        setShowSecretCodePrompt(true);
+        return;
+      }
+
+      if (error.code === 'ERR_NETWORK' || error.message?.includes('Network')) {
+        setSecretCodeError('Network error. Please check your connection and try again.');
+        setShowSecretCodePrompt(true);
+        return;
+      }
+
+      setSecretCodeError(`Error loading test: ${error.response?.data?.message || error.message || 'Please try again.'}`);
       setShowSecretCodePrompt(true);
     }
   };

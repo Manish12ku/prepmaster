@@ -64,20 +64,48 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-          Welcome back, {dbUser?.name?.split(' ')[0]}!
-        </h1>
+    <div className="space-y-6 max-w-7xl mx-auto px-1 sm:px-0">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+            Welcome back, {dbUser?.name?.split(' ')[0]}!
+          </h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">
+            Track your progress and improve your scores.
+          </p>
+        </div>
         <Link
           to="/student/tests"
-          className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors"
+          className="flex items-center justify-center gap-2 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-primary-500/25 active:scale-[0.98]"
         >
+          <BookOpen size={20} />
           Start New Test
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Mobile Quick Actions */}
+      <div className="grid grid-cols-2 gap-3 md:hidden">
+        <Link 
+          to="/student/results"
+          className="p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col items-center gap-2"
+        >
+          <div className="w-10 h-10 rounded-xl bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 flex items-center justify-center">
+            <FileText size={20} />
+          </div>
+          <span className="text-sm font-bold text-gray-700 dark:text-gray-200">Results</span>
+        </Link>
+        <Link 
+          to="/student/analytics"
+          className="p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col items-center gap-2"
+        >
+          <div className="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center">
+            <TrendingUp size={20} />
+          </div>
+          <span className="text-sm font-bold text-gray-700 dark:text-gray-200">Analytics</span>
+        </Link>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         <StatCard
           icon={BookOpen}
           label="Available Tests"
