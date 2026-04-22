@@ -28,20 +28,7 @@ if (typeof window !== 'undefined') {
 export { analytics };
 
 export const loginWithGoogle = async () => {
-  // Check if running on mobile device
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || 
-                   (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
-  
-  if (isMobile) {
-    // Use redirect method for mobile (more reliable)
-    await signInWithRedirect(auth, googleProvider);
-    // Check if we're returning from a redirect
-    const result = await getRedirectResult(auth);
-    return result;
-  } else {
-    // Use popup for desktop
-    return await signInWithPopup(auth, googleProvider);
-  }
+  return await signInWithPopup(auth, googleProvider);
 };
 export const logoutUser = () => signOut(auth);
 

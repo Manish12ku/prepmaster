@@ -16,7 +16,7 @@ const TestInterface = () => {
   const [secretCodeError, setSecretCodeError] = useState('');
   const [markedForReview, setMarkedForReview] = useState({});
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isPaletteOpen, setIsPaletteOpen] = useState(true);
+  const [isPaletteOpen, setIsPaletteOpen] = useState(window.innerWidth >= 768);
   const [timeRemaining, setTimeRemaining] = useState(0);
   const [questionStartTime, setQuestionStartTime] = useState(Date.now());
   const [questionTimes, setQuestionTimes] = useState({});
@@ -170,6 +170,9 @@ const TestInterface = () => {
     setQuestionTimes({ ...questionTimes, [currentQuestion]: timeSpent });
     setCurrentQuestion(newIndex);
     setQuestionStartTime(Date.now());
+    if (window.innerWidth < 768) {
+      setIsPaletteOpen(false);
+    }
   };
 
   const handleNext = () => {
@@ -364,25 +367,32 @@ const TestInterface = () => {
             </button>
             <h1 className="text-xl font-bold text-gray-900 dark:text-white">{test.testName}</h1>
           </div>
-          <div className="flex items-center space-x-6">
-            <div className={`flex items-center space-x-2 px-4 py-2 rounded-lg ${
+          <div className="flex items-center space-x-2 md:space-x-6">
+            <div className={`flex items-center space-x-1 md:space-x-2 px-2 md:px-4 py-1.5 md:py-2 rounded-lg ${
               timeRemaining < 300 ? 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300' : 'bg-gray-100 dark:bg-gray-700'
             }`}>
-              <Clock size={20} />
-              <span className="font-mono text-lg font-semibold">{formatTime(timeRemaining)}</span>
+              <Clock className="w-4 h-4 md:w-5 md:h-5" />
+              <span className="font-mono text-sm md:text-lg font-semibold">{formatTime(timeRemaining)}</span>
             </div>
             <button
               onClick={() => setShowSubmitConfirm(true)}
-              className="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors font-medium"
+              className="px-3 md:px-6 py-1.5 md:py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors font-medium text-sm md:text-base"
             >
-              Submit / Pause
+              <span className="hidden sm:inline">Submit / Pause</span>
+              <span className="sm:hidden">Finish</span>
+            </button>
+            <button
+               onClick={togglePalette}
+               className="md:hidden p-1.5 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+            >
+               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
             </button>
           </div>
         </div>
       </div>
 
-      <div className="flex-1 flex overflow-hidden">
-        <div className="flex-1 p-6 overflow-auto">
+      <div className="flex-1 flex overflow-hidden relative">
+        <div className="flex-1 p-4 md:p-6 overflow-auto">
           <div className="max-w-3xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-3">
@@ -529,7 +539,12 @@ const TestInterface = () => {
         </div>
 
         {isPaletteOpen && (
-          <div className="w-80 bg-gray-50 dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 p-4 overflow-auto">
+          <>
+            <div 
+              className="absolute inset-0 bg-black/50 z-40 md:hidden" 
+              onClick={() => setIsPaletteOpen(false)}
+            />
+            <div className="absolute inset-y-0 right-0 z-50 w-72 md:w-80 bg-gray-50 dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 p-4 overflow-auto md:relative md:z-0 shadow-2xl md:shadow-none transition-transform">
             <div className="mb-4">
               <div className="flex items-center space-x-2 mb-2">
                 <div className="w-6 h-6 bg-blue-500 rounded flex items-center justify-center text-white text-sm font-medium">
@@ -590,6 +605,7 @@ const TestInterface = () => {
               </div>
             </div>
           </div>
+          </>
         )}
       </div>
 
