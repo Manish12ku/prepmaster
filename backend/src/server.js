@@ -19,7 +19,9 @@ const corsOptions = {
       'http://localhost:5173',
       'http://localhost:3000',
       'https://prepmaster-silk.vercel.app',
-      'https://prepmastermocks.vercel.app'
+      'https://prepmastermocks.vercel.app',
+      'https://prepmastermocks.online',
+      'https://www.prepmastermocks.online'
     ];
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
